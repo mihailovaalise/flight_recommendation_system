@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <title>AFL SKY — авиарекомендации</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo-card">
+      <div class="logo-air">
+        <img src="red.png" alt="Plane logo" class="logo-icon" />
+        <div class="logo-text">
+          <span class="logo-main">AFL SKY</span>
+          <span class="logo-sub">Рекомендации для путешествий</span>
+        </div>
+      </div>
+
+      <div class="user-login">
+        <div class="login-row">
+          <button id="login-btn" type="button">Войти</button>
+          <button id="register-btn" class="secondary-btn" type="button">
+            Зарегистрироваться
+          </button>
+        </div>
+        <div id="login-status" class="login-status"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="search-section">
+      <h2>Купить билет</h2>
+
+      <div class="search-grid">
+        <div class="field">
+          <label for="origin-input">Город вылета</label>
+          <input id="origin-input" type="text" placeholder="Откуда" />
+        </div>
+
+        <div class="field">
+          <label for="destination-input">Город прилёта</label>
+          <input id="destination-input" type="text" placeholder="Куда" />
+        </div>
+
+        <div class="field">
+          <label for="date-depart-input">Туда</label>
+          <input id="date-depart-input" type="date" />
+        </div>
+
+        <div class="field">
+          <label for="date-return-input">Обратно</label>
+          <input id="date-return-input" type="date" />
+        </div>
+
+        <div class="field">
+          <label for="passengers-input">Пассажиры</label>
+          <select id="passengers-input">
+            <option>1 пасс., Эконом</option>
+            <option>2 пасс., Эконом</option>
+            <option>1 пасс., Бизнес</option>
+          </select>
+        </div>
+
+        <div class="field field-button">
+          <button id="search-btn">Найти</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="personal-section" class="recs-section hidden-section">
+      <div class="recs-header">
+        <h2>Вас может заинтересовать</h2>
+        <span id="recs-caption" class="recs-caption"></span>
+      </div>
+      <div id="recs-container" class="recs-container"></div>
+    </section>
+
+    <section class="recs-section popular-section">
+      <div class="recs-header">
+        <h2>Популярные маршруты</h2>
+        <span class="recs-caption">Пользователи чаще всего выбирают</span>
+      </div>
+
+      <img src="pop.png" alt="" class="popular-plane" />
+
+      <div id="popular-container" class="recs-container"></div>
+    </section>
+  </main>
+
+  <div id="register-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button id="close-modal-btn" class="modal-close" type="button">×</button>
+      <h2>Уточните ваши предпочтения</h2>
+      <p class="modal-subtitle">
+        Ответьте на несколько вопросов, чтобы мы подобрали стартовые маршруты.
+      </p>
+
+      <form id="register-form" class="register-form">
+        <div class="field">
+          <label for="reg-city">Из какого города вам удобнее вылетать?</label>
+          <input id="reg-city" type="text" placeholder="Например, Москва" required />
+        </div>
+
+        <div class="field">
+          <label for="reg-trip-style">Какие поездки вам интересны?</label>
+          <select id="reg-trip-style" required>
+            <option value="">Выберите вариант</option>
+            <option value="sea">Море</option>
+            <option value="north">Северные направления</option>
+            <option value="lakes">Озёра и природа</option>
+            <option value="excursions">Экскурсии и города</option>
+            <option value="business">Деловые поездки</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reg-season">Когда вы чаще путешествуете?</label>
+          <select id="reg-season" required>
+            <option value="">Выберите вариант</option>
+            <option value="spring">Весной</option>
+            <option value="summer">Летом</option>
+            <option value="autumn">Осенью</option>
+            <option value="winter">Зимой</option>
+            <option value="all_year">Круглый год</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reg-time-of-day">Когда удобнее вылетать?</label>
+          <select id="reg-time-of-day" required>
+            <option value="">Выберите вариант</option>
+            <option value="morning">Утром</option>
+            <option value="afternoon">Днём</option>
+            <option value="evening">Вечером</option>
+            <option value="night">Ночью</option>
+            <option value="any">Не важно</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reg-class">Какой класс предпочитаете?</label>
+          <select id="reg-class" required>
+            <option value="">Выберите вариант</option>
+            <option value="эконом">Эконом</option>
+            <option value="комфорт">Комфорт</option>
+            <option value="бизнес">Бизнес</option>
+            <option value="any">Не важно</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reg-dow-cat">Когда удобнее лететь?</label>
+          <select id="reg-dow-cat" required>
+            <option value="">Выберите вариант</option>
+            <option value="weekday">В будни</option>
+            <option value="weekend">В выходные</option>
+            <option value="any">Не важно</option>
+          </select>
+        </div>
+
+        <div id="moscow-airport-group" class="field hidden">
+          <label for="reg-moscow-airport">Какой аэропорт Москвы удобнее?</label>
+          <select id="reg-moscow-airport">
+            <option value="any">Не важно</option>
+            <option value="SVO">Шереметьево</option>
+            <option value="DME">Домодедово</option>
+            <option value="VKO">Внуково</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-register-btn">
+          Получить рекомендации
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button id="close-login-modal-btn" class="modal-close" type="button">×</button>
+      <h2>Вход в систему</h2>
+      <p class="modal-subtitle">
+        Введите ID участника, чтобы получить персональные рекомендации.
+      </p>
+
+      <form id="login-form" class="register-form">
+        <div class="field">
+          <label for="login-user-id">ID участника</label>
+          <input
+            id="login-user-id"
+            type="text"
+            inputmode="numeric"
+            placeholder="7452718674009852683"
+            required
+          />
+        </div>
+
+        <button type="submit" class="submit-register-btn">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="quiz-prompt" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button id="close-quiz-prompt-btn" class="modal-close" type="button">×</button>
+      <h2>Хотите пройти короткий тест для более точных рекомендаций?</h2>
+      <p id="quiz-text" class="modal-subtitle">
+        У вас мало истории перелётов, поэтому короткий тест поможет точнее подобрать рекомендации.
+      </p>
+      <div class="quiz-actions">
+        <button id="quiz-yes-btn" type="button" class="submit-register-btn">Да</button>
+        <button id="quiz-no-btn" type="button" class="quiz-secondary-btn">Нет</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quiz-container" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button id="close-quiz-btn" class="modal-close" type="button">×</button>
+      <div id="quiz-content"></div>
+    </div>
+  </div>
+
+  <div id="flights-modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content flights-modal-content">
+      <button id="close-flights-modal-btn" class="modal-close" type="button">×</button>
+
+    <div class="flights-header-row">
+      <div>
+        <h2 id="flights-modal-title">Топ рейсы по маршруту</h2>
+        <p id="flights-modal-subtitle" class="modal-subtitle">
+          Самые популярные рейсы по выбранному направлению.
+        </p>
+      </div>
+
+      <button id="sort-by-time-btn" type="button" class="sort-chip">
+        Сначала ближайшие
+      </button>
+    </div>
+      <div id="flights-cards-container" class="recs-container flights-container"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
